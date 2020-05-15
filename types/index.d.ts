@@ -167,6 +167,13 @@ export const NavStackPlugin:{ install:(Vue:VueConstructor,componentName?:string)
 //-------------------------公共------------------------------------
 
 
+declare module "vue/types/vue" {
+    interface Vue {
+        activateActions ?: ActionOpts;   //可选；默认值：undefined；目标：当前组件；如果提供该属性，则会覆盖 NavStack 的 activate 提供的值；
+        deactivateActions ?: ActionOpts;  //可选；默认值：undefined；目标：当前组件；如果提供该属性，则会覆盖 NavStack 的 deactivate 提供的值；
+    }
+}
+
 
 
 
