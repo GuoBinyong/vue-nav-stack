@@ -34,6 +34,7 @@
     "@rollup/plugin-commonjs": "^11.1.0",
     "@rollup/plugin-node-resolve": "^7.1.3",
     "es-expand": "^1.0.11",
+    "eslint": "^7.0.0",
     "rollup": "^2.7.2",
     "rollup-plugin-babel": "^4.2.0"
   },
