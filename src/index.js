@@ -1,5 +1,5 @@
 import {getVNodeTagAndName,getVueInstTagAndName,forceRefreshVueInst,reinitVueInst,refreshVueInstHooks} from 'vnode-tls'
-import {getTypeStringOf} from "com-tools"
+import {getTypeNameOf} from "com-tools"
 
 
 /*
@@ -363,7 +363,7 @@ function resolveActionOptions(actionOpts,alive,vueInst,isKeepAliveChild,keepAliv
 function  formatActionOptions(actionOpts) {
 
   let actionsArr;
-  switch (getTypeStringOf(actionOpts)) {
+  switch (getTypeNameOf(actionOpts)) {
     case "String":{
       actionsArr = [{action:actionOpts}];
       break;
