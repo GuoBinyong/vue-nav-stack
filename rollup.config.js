@@ -2,6 +2,7 @@ import {removeScope,getBaseNameOfHumpFormat,getDependencieNames} from "package-t
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import babel from '@rollup/plugin-babel';
+import { terser } from "rollup-plugin-terser";
 import pkg from './package.json';
 
 
@@ -17,6 +18,27 @@ import pkg from './package.json';
 /*
 共用的配置
 */
+
+
+// rollup 中共用的 output 选项
+const shareOutput = {
+	// 要插入到生成文件顶部的字段串；
+	banner: `
+/*
+${pkg.name || ""}	${pkg.version? "v"+ pkg.version : ""}
+author: ${pkg.author || ""}
+license: ${pkg.license || ""}
+homepage: ${pkg.homepage || ""}
+repository: ${(pkg.repository && pkg.repository.url) || ""}
+description: ${pkg.description || ""}
+*/
+`,
+	// 要插入到生成文件底部的字段串；
+	// footer:""
+};
+
+
+
 
 // 预设
 const presets = [
@@ -82,7 +104,7 @@ export default [
 	*/
 	{
 		...shareConf,
-		output: { file: pkg.module || `dist/${removeScope(pkg.name)}.esm.js`, format: 'es' },  // ES module
+		output: {...shareOutput, file: pkg.module || `dist/${removeScope(pkg.name)}.es.js`, format: 'es' },  // ES module
 		plugins: [
 			...shareConf.plugins.slice(0,shareConf.plugins.length - 1),
 			babel({
@@ -101,7 +123,7 @@ export default [
 
 	{
 		...shareConf,
-		output: { file: pkg.main || `dist/${removeScope(pkg.name)}.cjs.js`, format: 'cjs' }, // CommonJS
+		output: {...shareOutput, file: pkg.main || `dist/${removeScope(pkg.name)}.cjs.js`, format: 'cjs' }, // CommonJS
 	},
 
 
@@ -109,17 +131,20 @@ export default [
 	兼容各种引入方式的构建
 	特点：
 	   - 可用 <script> 标签直接引入
-	   - 也可用 AMD、CommonJS 的模块化方案引入；
+	   - 也可用 AMD、CommonJS 的模块化方案引入
 	   - 将所有依赖都构建在了一起
+	   - 对代码进行了压缩
 	*/
 	{
 		...shareConf,
         external:getDependencieNames(pkg,"peerDependencies"),   //只移除 peerDependencies 中的依赖
 		output: {
+			...shareOutput,
 			// 如果 pkg.browser 是字符串类型，则 file 为 pkg.browser，否则为 `<包名>.umd.js`
 			file: typeof pkg.browser === "string" ? pkg.browser : `dist/${removeScope(pkg.name)}.umd.js`,
 			format: 'umd',
-			name: getBaseNameOfHumpFormat(pkg.name)  //驼峰格式的 pkg.name
+			name: getBaseNameOfHumpFormat(pkg.name),  //驼峰格式的 pkg.name
+			plugins: [terser()]     //压缩代码
 		}  // umd
 	}
 ];
