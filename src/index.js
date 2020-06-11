@@ -1,5 +1,5 @@
 import {getVNodeTagAndName,getVueInstTagAndName,forceRefreshVueInst,reinitVueInst,refreshVueInstHooks} from 'vnode-tls'
-import {getTypeNameOf} from "com-tools"
+import {getTypeNameOf} from "type-tls"
 
 
 /*
