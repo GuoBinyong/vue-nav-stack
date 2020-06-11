@@ -1,6 +1,6 @@
 {
   "name": "vue-nav-stack",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "vue-nav-stack 实现了vue的导航栈的功能，即：push 新页面后，之前的页面不会被销毁，但 back 之后，被返回的页面会被销毁，并且各个页面可定制自己的销毁逻辑",
   "main": "dist/vue-nav-stack.cjs.js",
   "module": "dist/vue-nav-stack.es.js",
